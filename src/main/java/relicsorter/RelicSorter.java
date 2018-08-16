@@ -1,17 +1,29 @@
 package relicsorter;
 
+import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
 import com.evacipated.cardcrawl.modthespire.lib.SpirePatch;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
-import com.megacrit.cardcrawl.core.Settings;
-import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.input.InputHelper;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 
-public class RelicSorter {
+import basemod.BaseMod;
+import basemod.interfaces.PostInitializeSubscriber;
+import relicsorter.util.TextureLoader;
 
-    public RelicSorter() {
+@SpireInitializer
+public class RelicSorter implements PostInitializeSubscriber{
+	
+    private static final String NAME = "Relic Sorter";
+	private static final String AUTHOR = "Blank The Evil";
+	private static final String DESC = "Allows you to send relics to the front of the list by right clicking them.";
 
+	public RelicSorter() {
+		BaseMod.subscribe(this);
     }
+    
+    public void receivePostInitialize() {
+		BaseMod.registerModBadge(TextureLoader.getTexture("img/relicsorter/badge.png"), NAME, AUTHOR, DESC, null);
+	}
 
     public static void log(String ... items) {
         System.out.print("RelicSorter ");
@@ -22,40 +34,41 @@ public class RelicSorter {
     }
 
     public static void initialize() {
-        log("Version", "0.0.1");
+        log("Version", "1.0.0");
+        new RelicSorter();
     }
 
     @SpirePatch(cls = "com.megacrit.cardcrawl.characters.AbstractPlayer", method = "update")
     public static class PlayerUpdate{
         public static void Postfix(AbstractPlayer player) {
             boolean rightClicked = InputHelper.justClickedRight;
-            if(AbstractDungeon.player.relics.size() > 2 && rightClicked) {
+            if(player.relics.size() > 2 && rightClicked) {
                 int selIndex = -1;
-                for (int i = AbstractDungeon.player.relics.size() - 1; i >= 2; i--) {
-                    AbstractRelic relic = AbstractDungeon.player.relics.get(i);
+                for (int i = player.relics.size() - 1; i >= 2; i--) {
+                    AbstractRelic relic = player.relics.get(i);
                     if (relic.hb.hovered) {
                         selIndex = i;
                         log("Clicked", relic.name, "" + i);
                     }
                 }
                 if(selIndex != -1) {
-                    float tempCX = AbstractDungeon.player.relics.get(selIndex).currentX;
-                    float temphX = AbstractDungeon.player.relics.get(selIndex).hb.x;
+                    float tempCX = player.relics.get(selIndex).currentX;
+                    float temphX = player.relics.get(selIndex).hb.x;
 
-                    moveRelic(AbstractDungeon.player.relics.get(selIndex), AbstractDungeon.player.relics.get(1));
+                    moveRelic(player.relics.get(selIndex), player.relics.get(1));
 
-                    AbstractRelic temp = AbstractDungeon.player.relics.remove(selIndex);
-                    AbstractDungeon.player.relics.add(1, temp);
+                    AbstractRelic temp = player.relics.remove(selIndex);
+                    player.relics.add(1, temp);
 
 
                     for (int i = 2; i < selIndex; i++) {
-                        AbstractRelic r1 = AbstractDungeon.player.relics.get(i);
-                        AbstractRelic r2 = AbstractDungeon.player.relics.get(i + 1);
+                        AbstractRelic r1 = player.relics.get(i);
+                        AbstractRelic r2 = player.relics.get(i + 1);
                         log("Moving", r1.name, "to", r2.name);
                         moveRelic(r1, r2);
                     }
 
-                    moveRelic(AbstractDungeon.player.relics.get(selIndex), tempCX, temphX);
+                    moveRelic(player.relics.get(selIndex), tempCX, temphX);
                 }
             }
         }
@@ -70,4 +83,6 @@ public class RelicSorter {
         r1.currentX = currentX;
         r1.hb.x= hbX;
     }
+
+	
 }
