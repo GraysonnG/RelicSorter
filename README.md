@@ -1,7 +1,7 @@
 # Relic Sorter
 
 ## Description
-Allows you to right click a relic to bring it to the front of the list.
+Allows you to move relics to the front of the list.
 
 ## Requirements
 - Java 8 (Mod The Spire has issues with Java 9)
