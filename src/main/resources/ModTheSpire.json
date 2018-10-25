@@ -4,7 +4,7 @@
   "author_list": ["Blank The Evil"],
   "description": "Allows you to send relics to the front of the list by right clicking them. You can change this in the config options.",
   "dependencies" : ["basemod"],
-  "version": "1.1.0",
+  "version": "1.1.1",
   "sts_version": "09-27-2018",
   "mts_version": "3.2.0",
   "update_json": "https://api.github.com/repos/GraysonnG/RelicSorter/releases/latest"

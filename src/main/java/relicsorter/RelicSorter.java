@@ -1,25 +1,16 @@
 package relicsorter;
 
-import basemod.DevConsole;
-import basemod.ModButton;
-import basemod.ModPanel;
+import basemod.BaseMod;
+import basemod.interfaces.PostInitializeSubscriber;
 import basemod.interfaces.PreDungeonUpdateSubscriber;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.InputProcessor;
 import com.evacipated.cardcrawl.modthespire.lib.SpireConfig;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
-import com.evacipated.cardcrawl.modthespire.lib.SpirePatch;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
-import com.megacrit.cardcrawl.helpers.input.InputAction;
 import com.megacrit.cardcrawl.helpers.input.InputHelper;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
-
-import basemod.BaseMod;
-import basemod.interfaces.PostInitializeSubscriber;
-import relicsorter.util.TextureLoader;
 
 import java.io.IOException;
 
@@ -40,7 +31,7 @@ public class RelicSorter implements PostInitializeSubscriber, PreDungeonUpdateSu
 	public RelicSorter() {
 		BaseMod.subscribe(this);
 		BaseMod.subscribe(new RelicSorterInit());
-		load();
+        load();
     }
 
     public static void load(){
@@ -76,7 +67,7 @@ public class RelicSorter implements PostInitializeSubscriber, PreDungeonUpdateSu
 
     @Override
     public void receivePreDungeonUpdate() {
-	    if(AbstractDungeon.player == null)
+	    if(AbstractDungeon.player == null || AbstractDungeon.player.relics == null)
 	        return;
 
 	    AbstractPlayer player = AbstractDungeon.player;
@@ -142,7 +133,7 @@ public class RelicSorter implements PostInitializeSubscriber, PreDungeonUpdateSu
     }
 
     public static void initialize() {
-        log("Version", "1.1.0");
+        log("Version", "1.1.1");
         new RelicSorter();
     }
 
