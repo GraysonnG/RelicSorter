@@ -1,7 +1,6 @@
 package relicsorter;
 
 import basemod.BaseMod;
-import basemod.interfaces.PostInitializeSubscriber;
 import basemod.interfaces.PreDungeonUpdateSubscriber;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -15,7 +14,7 @@ import com.megacrit.cardcrawl.relics.AbstractRelic;
 import java.io.IOException;
 
 @SpireInitializer
-public class RelicSorter implements PostInitializeSubscriber, PreDungeonUpdateSubscriber{
+public class RelicSorter implements PreDungeonUpdateSubscriber{
 	
     public static final String NAME = "Relic Sorter";
 	public static final String AUTHOR = "Blank The Evil";
@@ -123,16 +122,11 @@ public class RelicSorter implements PostInitializeSubscriber, PreDungeonUpdateSu
                         InputHelper.justClickedRight = false;
                         break;
                     case MIDDLE:
-                        // Nothing
                         break;
                 }
             }
         }
     }
-
-    public void receivePostInitialize() {
-
-	}
 
     public static void log(String ... items) {
         System.out.print("RelicSorter ");
