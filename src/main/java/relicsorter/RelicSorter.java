@@ -114,9 +114,19 @@ public class RelicSorter implements PostInitializeSubscriber, PreDungeonUpdateSu
                 }
 
                 moveRelic(player.relics.get(selIndex), tempCX, temphX);
-            }
 
-            InputHelper.justClickedLeft = false;
+                switch (binding) {
+                    case LEFT:
+                        InputHelper.justClickedLeft = false;
+                        break;
+                    case RIGHT:
+                        InputHelper.justClickedRight = false;
+                        break;
+                    case MIDDLE:
+                        // Nothing
+                        break;
+                }
+            }
         }
     }
 
