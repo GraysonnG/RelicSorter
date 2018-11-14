@@ -137,7 +137,7 @@ public class RelicSorter implements PreDungeonUpdateSubscriber{
     }
 
     public static void initialize() {
-        log("Version", "1.1.1");
+        log("Version", "1.1.2");
         new RelicSorter();
     }
 
