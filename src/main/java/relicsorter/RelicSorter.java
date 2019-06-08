@@ -10,6 +10,7 @@ import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.input.InputHelper;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
+import relicsorter.patches.RelicSorterPatches;
 
 import java.io.IOException;
 
@@ -21,6 +22,7 @@ public class RelicSorter implements PreDungeonUpdateSubscriber{
 	public static final String DESC = "Allows you to send relics to the front of the list by right clicking them.";
 	public static BindingEnum binding;
 	public static int keyBind;
+
 	public enum BindingEnum {
 	    LEFT,
         RIGHT,
@@ -86,7 +88,7 @@ public class RelicSorter implements PreDungeonUpdateSubscriber{
         if(!clicked)
             clicked = Gdx.input.isKeyJustPressed(keyBind);
 
-        if(player.relics.size() > 2 && clicked) {
+        if(player.relics.size() > 2 && canMoveRelics() && clicked) {
             int selIndex = -1;
             for (int i = player.relics.size() - 1; i >= 2; i--) {
                 AbstractRelic relic = player.relics.get(i);
@@ -97,7 +99,7 @@ public class RelicSorter implements PreDungeonUpdateSubscriber{
             }
             if(selIndex != -1) {
                 float tempCX = player.relics.get(selIndex).currentX;
-                float temphX = player.relics.get(selIndex).hb.x;
+                float tempHbX = player.relics.get(selIndex).hb.x;
 
                 moveRelic(player.relics.get(selIndex), player.relics.get(1));
 
@@ -112,7 +114,7 @@ public class RelicSorter implements PreDungeonUpdateSubscriber{
                     moveRelic(r1, r2);
                 }
 
-                moveRelic(player.relics.get(selIndex), tempCX, temphX);
+                moveRelic(player.relics.get(selIndex), tempCX, tempHbX);
 
                 switch (binding) {
                     case LEFT:
@@ -141,14 +143,33 @@ public class RelicSorter implements PreDungeonUpdateSubscriber{
         new RelicSorter();
     }
 
-    private static void moveRelic(AbstractRelic r1, AbstractRelic r2){
-        r1.currentX = r2.currentX;
-        r1.hb.x = r2.hb.x;
+    private static boolean moveRelic(AbstractRelic r1, AbstractRelic r2) {
+	    if(!RelicSorterPatches.RelicSorterFields.isMoving.get(r1)) {
+            r1.targetX = r2.currentX;
+            r1.hb.x = r2.hb.x;
+            RelicSorterPatches.RelicSorterFields.isMoving.set(r1, true);
+            return true;
+        }
+	    return false;
     }
 
-    private static void moveRelic(AbstractRelic r1, float currentX, float hbX){
-        r1.currentX = currentX;
-        r1.hb.x= hbX;
+    private static boolean moveRelic(AbstractRelic r1, float currentX, float cHbX) {
+        if(!RelicSorterPatches.RelicSorterFields.isMoving.get(r1)) {
+            r1.targetX = currentX;
+            r1.hb.x = cHbX;
+            RelicSorterPatches.RelicSorterFields.isMoving.set(r1, true);
+            return true;
+        }
+        return false;
+    }
+
+    private static boolean canMoveRelics() {
+        for (AbstractRelic relic: AbstractDungeon.player.relics) {
+            if(RelicSorterPatches.RelicSorterFields.isMoving.get(relic)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private static boolean justPressedMiddleLast = false;
