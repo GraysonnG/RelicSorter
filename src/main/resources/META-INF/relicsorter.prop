@@ -1,0 +1,5 @@
+id=${project.artifactId}
+name=${project.name}
+version=${project.version}
+author=Blank The Evil
+description=${project.description}
