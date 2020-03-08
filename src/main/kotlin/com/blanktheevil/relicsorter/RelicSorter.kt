@@ -81,17 +81,18 @@ class RelicSorter : PreDungeonUpdateSubscriber {
           val clickedRelic = relics[selIndex]
           val tempCurrentX = clickedRelic.currentX
 
-          RelicSorterHelper.moveRelic(clickedRelic, relics[1])
+
+          clickedRelic.moveTo(relics[1])
           relics.add(1, relics.removeAt(selIndex))
 
           for (i in 2 until selIndex) {
             val relicA = relics[i]
             val relicB = relics[i + 1]
             println("Moving ${relicA.name} to ${relicB.name}")
-            RelicSorterHelper.moveRelic(relicA, relicB)
+            relicA.moveTo(relicB)
           }
 
-          RelicSorterHelper.moveRelic(relics[selIndex], tempCurrentX)
+          relics[selIndex].moveTo(tempCurrentX)
 
           when (config.binding) {
             BindingEnum.LEFT -> InputHelper.justClickedLeft = false
