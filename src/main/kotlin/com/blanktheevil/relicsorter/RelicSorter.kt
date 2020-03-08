@@ -8,6 +8,7 @@ import com.blanktheevil.relicsorter.helpers.RelicSorterHelper
 import com.blanktheevil.relicsorter.models.BindingEnum
 import com.blanktheevil.relicsorter.models.Config
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer
+import com.megacrit.cardcrawl.core.Settings
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon
 import com.megacrit.cardcrawl.helpers.input.InputHelper
 import com.megacrit.cardcrawl.relics.AbstractRelic
@@ -23,7 +24,7 @@ class RelicSorter : PreDungeonUpdateSubscriber {
     lateinit var config: Config
 
     var name: String = ""
-    var version: String = ""
+    private var version: String = ""
     var modid: String = ""
     var author: String = ""
     var description: String = ""
@@ -50,6 +51,16 @@ class RelicSorter : PreDungeonUpdateSubscriber {
         e.printStackTrace()
       }
     }
+
+    private fun log(vararg items: Any?) {
+      if (Settings.isDebug) {
+        print("Relic Sorter")
+        items.forEach {
+          print(" : ${it.toString()}")
+        }
+        println()
+      }
+    }
   }
 
   override fun receivePreDungeonUpdate() {
@@ -73,26 +84,22 @@ class RelicSorter : PreDungeonUpdateSubscriber {
           val relic: AbstractRelic = relics[i]
           if (relic.hb.hovered) {
             selIndex = i
-            println("Clicked ${relic.name} $i")
+            log("Clicked ${relic.name} $i")
           }
         }
 
         if (selIndex != null) {
-          val clickedRelic = relics[selIndex]
-          val tempCurrentX = clickedRelic.currentX
+          val tempCurrentX = relics[1].currentX
 
-
-          clickedRelic.moveTo(relics[1])
-          relics.add(1, relics.removeAt(selIndex))
-
-          for (i in 2 until selIndex) {
+          for (i in 1 until selIndex) {
             val relicA = relics[i]
             val relicB = relics[i + 1]
-            println("Moving ${relicA.name} to ${relicB.name}")
+            log("Moving ${relicA.name} to ${relicB.name}")
             relicA.moveTo(relicB)
           }
 
           relics[selIndex].moveTo(tempCurrentX)
+          relics.add(1, relics.removeAt(selIndex))
 
           when (config.binding) {
             BindingEnum.LEFT -> InputHelper.justClickedLeft = false

@@ -12,7 +12,7 @@ class Config(
   var keyBind: Int
 ) {
   companion object {
-    val dirPath = ConfigUtils.CONFIG_DIR + File.separator + RelicSorter.modid + File.separator + "config.gz"
+    private val dirPath = ConfigUtils.CONFIG_DIR + File.separator + RelicSorter.modid + File.separator + "config.gz"
 
     fun init(): Config {
       val file = File(dirPath)
@@ -36,8 +36,9 @@ class Config(
       }
     }
 
+    @Suppress("MemberVisibilityCanBePrivate")
     fun load(): Config {
-      var file = File(dirPath)
+      val file = File(dirPath)
 
       return try {
         Gson().fromJson(GZIPHelper.loadDataFromFile(file), Config::class.java) ?: getDefault()
@@ -46,7 +47,7 @@ class Config(
       }
     }
 
-    fun getDefault(): Config {
+    private fun getDefault(): Config {
       return Config(BindingEnum.RIGHT, Input.Keys.R)
     }
   }

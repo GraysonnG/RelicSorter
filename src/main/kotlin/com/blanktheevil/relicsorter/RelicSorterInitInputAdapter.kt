@@ -9,7 +9,7 @@ class RelicSorterInitInputAdapter(val keyBindingButton: ModButton) : InputAdapte
   override fun keyUp(keycode: Int): Boolean {
     RelicSorter.config.keyBind = keycode
     Config.save(RelicSorter.config)
-    keyBindingButton.parent.waitingOnEvent = false;
+    keyBindingButton.parent.waitingOnEvent = false
     Gdx.input.inputProcessor = RelicSorterInit.oldInputProcessor
     return true
   }
