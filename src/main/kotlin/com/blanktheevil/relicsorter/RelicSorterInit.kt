@@ -130,6 +130,7 @@ class RelicSorterInit : PostInitializeSubscriber {
       BindingEnum.LEFT -> radioButtons[0].enabled = true
       BindingEnum.RIGHT -> radioButtons[2].enabled = true
       BindingEnum.MIDDLE -> radioButtons[1].enabled = true
+      else -> {}
     }
   }
 

@@ -5,7 +5,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputAdapter
 import com.blanktheevil.relicsorter.models.Config
 
-class RelicSorterInitInputAdapter(val keyBindingButton: ModButton) : InputAdapter() {
+class RelicSorterInitInputAdapter(private val keyBindingButton: ModButton) : InputAdapter() {
   override fun keyUp(keycode: Int): Boolean {
     RelicSorter.config.keyBind = keycode
     Config.save(RelicSorter.config)
