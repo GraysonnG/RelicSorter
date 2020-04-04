@@ -66,9 +66,7 @@ class RelicSorter : PreDungeonUpdateSubscriber {
   override fun receivePreDungeonUpdate() {
     if (AbstractDungeon.player == null || AbstractDungeon.player.relics == null) return
     with(AbstractDungeon.player) {
-      var clicked: Boolean
-
-      clicked = when (config.binding) {
+      var clicked = when (config.binding) {
         BindingEnum.LEFT -> InputHelper.justClickedLeft
         BindingEnum.RIGHT -> InputHelper.justClickedRight
         BindingEnum.MIDDLE -> handleMiddleClick()
