@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>graysonng</groupId>
+    <groupId>blanktheevil</groupId>
     <name>Relic Sorter</name>
     <description>Allows you to send relics to the front of the list by right clicking them. You can change this in the config options.</description>
     <artifactId>relicsorter</artifactId>
