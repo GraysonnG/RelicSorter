@@ -8,8 +8,8 @@ import com.google.gson.Gson
 import java.io.File
 
 class Config(
-  var binding: BindingEnum,
-  var keyBind: Int
+  var binding: BindingEnum = BindingEnum.RIGHT,
+  var keyBind: Int = Input.Keys.R
 ) {
   companion object {
     private val dirPath = ConfigUtils.CONFIG_DIR + File.separator + RelicSorter.modid + File.separator + "config.gz"
